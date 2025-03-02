@@ -1,9 +1,10 @@
 import React from "react";
+import '../App.css';
 
 const ResponseCodeImage = ({ code }) => {
   return (
-    <div>
-      <img src={`https://http.dog/${code}.jpg`} alt={`HTTP ${code}`} width={200} />
+    <div className="response-card">
+      <img src={`https://http.dog/${code}.jpg`} alt={`HTTP ${code}`} width={360} />
       <p>{code}</p>
     </div>
   );

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import FilterForm from "../components/FilterForm";
 import ResponseCodeImage from "../components/ResponseCodeImage";
-import { addList } from "../utils/firestoreUtils";
+import SaveIcon from '@mui/icons-material/Save';
 import { useAuth } from "../contexts/AuthContext";
 import { useLists } from "../contexts/ListsContext";
 
 const SearchPage = () => {
   const [filteredCodes, setFilteredCodes] = useState([]);
   const [listName, setListName] = useState("");
+  const [error, setError] = useState("");
   const { currentUser } = useAuth();
   const {addNewList} = useLists();
 
@@ -128,7 +129,14 @@ const SearchPage = () => {
   };
 
   const saveList = async () => {
-    if (!listName || filteredCodes.length === 0) return;    
+    if (!listName) {
+      setError("List name cannot be empty")
+      return;    
+    }
+    else if (filteredCodes.length === 0) {
+      setError("No response codes to save")
+      return;
+    }
     const listData = {
       name: listName,
       createdAt: new Date().toISOString(),
@@ -144,16 +152,26 @@ const SearchPage = () => {
   };
 
   return (
-    <div>
-      <h1>Search Response Codes</h1>
+    <div className="searchPage-container">
+      <h2 className="subtitle">Search Response Codes</h2>
       <FilterForm onFilter={handleFilter} />
-      <input type="text" placeholder="List Name" value={listName} onChange={(e) => setListName(e.target.value)} />
-      <button onClick={saveList}>Save List</button>
-      <div>
-        {filteredCodes.map((code) => (
-          <ResponseCodeImage key={code} code={code} />
-        ))}
-      </div>
+      {filteredCodes && filteredCodes.length > 0 &&
+      <>
+        <div className="filter-form">
+          <input type="text" placeholder="Enter list name to save" value={listName} onChange={(e) => {
+            setListName(e.target.value);
+            setError("");
+          }} />
+          <button className="iconBtn" onClick={saveList}><SaveIcon /></button>
+        </div>
+        {error && <p className="error">{error}</p>}
+        <div className="searchResult-container">
+          {filteredCodes.map((code) => (
+            <ResponseCodeImage key={code} code={code} />
+          ))}
+        </div>
+      </>
+      }
     </div>
   );
 };

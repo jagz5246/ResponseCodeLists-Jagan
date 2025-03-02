@@ -13,7 +13,6 @@ const LoginSignup = () => {
   })
   return (
     <div>
-      <h1>Welcome</h1>
       <AuthForm />
     </div>
   );

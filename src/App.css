@@ -4,30 +4,9 @@
   font-family: "Roboto", sans-serif;
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-}
-
-.list-container {
-  display: flex;
-  gap: 20px;
-}
-
-.list-names {
-  flex: 1;
-}
-
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 5px 0;
-}
-
-.list-details {
-  flex: 2;
+body {
+  background: #ffc0cb20;
+  min-height: 100vh;
 }
 
 .images {
@@ -45,14 +24,58 @@ img {
   height: auto;
   border-radius: 8px;
 }
-.navbar {
+
+.loginContainer {
+  max-width: 400px;
+  margin: 140px auto auto auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: #ba418015;
+  color: #000000;
+}
+
+.loginForm {
+  margin: 40px 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: #575757;
-  padding-bottom: 10px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loginForm input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ba4180b5;
+}
+
+.loginForm button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #ea58c0;
   color: white;
+  cursor: pointer;
+}
+
+.loginLink {
+  cursor: pointer;
+  color: #ba4180b5;
+}
+
+.error {
+  color: red;
+}
+
+.navbar {
+  max-width: 80%;
+  display: flex;
+  margin: 40px auto;
+  justify-content: space-between;
+  border-radius: 20px;
+  align-items: center;
+  padding: 30px 20px;
+  background: #ffffff91;
+  color: #ba4180b5;
+  border-bottom: 1px solid;
 }
 
 .nav-links {
@@ -60,14 +83,174 @@ img {
   gap: 15px;
 }
 
-.nav-links a, .nav-links button {
-  color: white;
+.nav-link {
   text-decoration: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  color: #000000;
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background 0.05s;
 }
 
-.nav-links button:hover {
+.nav-link:hover {
   text-decoration: underline;
+}
+
+.logoutBtn {
+  background: none;
+  color: #ea58c0;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.logoutBtn:hover {
+  border-radius: 5px;
+  background: #ba4180b5;
+  color: #fff;
+}
+
+.active {
+  background-color: #ba4180b5;
+  color: #fff;
+}
+
+.subtitle {
+  font-size: 28px;
+  margin: 20px 0;
+  color: #d452ae;
+  text-align: center;
+}
+
+.searchPage-container {
+  max-width: 80%;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.searchPage-container input {
+  padding: 10px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ba4180b5;
+}
+
+.filter-form {
+  display: flex;
+  gap: 10px;
+}
+
+.iconBtn {
+  background: #ea58c0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.searchResult-container {
+  border-radius: 20px;
+  padding: 50px;
+  background: #ffffff91;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.response-card {
+  padding: 28px;
+  background: #d452ae1f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.userList-container {
+  max-width: 80%;
+  margin: 60px auto 20px auto;
+}
+
+.userList-flex {
+  margin: 40px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.lists-form {
+  min-width: 320px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #d452ae1f;
+  border-radius: 20px;
+}
+
+.list-item:hover {
+  background: #d452ae3f;
+}
+
+.list-item-options {
+  display: flex;
+  gap: 10px;
+}
+
+.list-details {
+  flex: 1;
+  gap: 10px;
+}
+
+.selectedList-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editList-container {
+  max-width: 80%;
+  margin: 40px auto;
+  padding: 10px;
+  border-radius: 20px;
+  background: #ba418015;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editList-imageContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.editList-card {
+  padding: 20px;
+  background: #d452ae1f;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editList-card button {
+  padding: 10px;
+  background: none;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
 }

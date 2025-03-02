@@ -1,8 +1,8 @@
 import '../App.css';
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useEffect } from 'react';
 import { useLists } from '../contexts/ListsContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const NavBar = () => {
   const { currentUser, logout } = useAuth();
@@ -22,9 +22,9 @@ const NavBar = () => {
 
       {currentUser ? (
         <div className="nav-links">
-          <Link to="/lists">Lists</Link>
-          <Link to="/search">Search</Link>
-          <button onClick={handleLogout}>Logout</button>
+          <NavLink to="/lists" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Lists</NavLink>
+          <NavLink to="/search" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Search</NavLink>
+          <button onClick={handleLogout} className="logoutBtn"><LogoutIcon /></button>
         </div>
       ) : null}
     </nav>
