@@ -10,7 +10,6 @@ export const ListsProvider = ({ children }) => {
 
   const getLists = async () => {
     const fetchedLists = await fetchLists(currentUser.uid);
-    console.log("List data", fetchedLists);
     setLists(fetchedLists);
   };
 
@@ -23,16 +22,19 @@ export const ListsProvider = ({ children }) => {
   const addNewList = async (listData, userId) => {
     await addList(listData, userId);
     setLists([...lists, listData]);
+    getLists();
   };
 
   const editList = async (listId, newData) => {
     await updateList(listId, newData);
     setLists(lists.map((list) => (list.id === listId ? { ...list, ...newData } : list)));
+    getLists();
   };
 
   const removeList = async (listId, userId) => {
     await deleteList(listId, userId);
     setLists(lists.filter((list) => list.id !== listId));
+    getLists();
   };
 
   return (

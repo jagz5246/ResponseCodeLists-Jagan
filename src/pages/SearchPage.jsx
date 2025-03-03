@@ -4,14 +4,19 @@ import ResponseCodeImage from "../components/ResponseCodeImage";
 import SaveIcon from '@mui/icons-material/Save';
 import { useAuth } from "../contexts/AuthContext";
 import { useLists } from "../contexts/ListsContext";
+import Loader from "../components/Loader";
+import Toast from "../components/Toast";
 
 const SearchPage = () => {
   const [filteredCodes, setFilteredCodes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
   const [listName, setListName] = useState("");
   const [error, setError] = useState("");
   const { currentUser } = useAuth();
-  const {addNewList} = useLists();
-
+  const {addNewList, getLists} = useLists();
+  const regex = /^[1-5][0-9x]{0,2}$/;
   const statusCodes = [
     "100",
     "101",
@@ -118,23 +123,44 @@ const SearchPage = () => {
   ]
 
   const handleFilter = (filter) => {
-    let codes = [];
-    if (filter.includes("x")) {
-      const codeFilter = filter.replaceAll('x','');
-      codes = statusCodes.filter(code => code.startsWith(codeFilter));
-    } else {
-      codes = [filter];
+    setIsLoading(true);
+    try {
+      let codes = [];
+      if(filter.length > 0 && regex.test(filter)) {
+        if (filter.includes("x")) {
+        const codeFilter = filter.replaceAll('x','');
+        codes = statusCodes.filter(code => code.startsWith(codeFilter));
+        setFilteredCodes(codes);
+        } 
+        else if (filter.length > 0 && statusCodes.includes(filter)) {
+          codes = [filter];
+          setFilteredCodes(codes);
+        }
+        else{
+          setError("Invalid response code");  
+        }
     }
-    setFilteredCodes(codes);
+    else {
+      setError("Please provide valid input");
+    }
+    setIsLoading(false);
+    } 
+    catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
   };
 
   const saveList = async () => {
+    setIsLoading(true);
     if (!listName) {
-      setError("List name cannot be empty")
+      setError("List name cannot be empty");
+      setIsLoading(false);
       return;    
     }
     else if (filteredCodes.length === 0) {
       setError("No response codes to save")
+      setIsLoading(false);
       return;
     }
     const listData = {
@@ -145,16 +171,22 @@ const SearchPage = () => {
     }
     try {
       await addNewList(listData, currentUser.uid);
-      alert("List saved!");
+      setIsLoading(false);
+      setMessage("List Saved successfully");
+      setShowToast(true);      
     } catch (error) {
+      setIsLoading(false);
       alert(error);
     }
   };
 
   return (
     <div className="searchPage-container">
+      {showToast && <Toast message={message} toggleToast={setShowToast}/>}
+      {isLoading && <Loader />}
       <h2 className="subtitle">Search Response Codes</h2>
-      <FilterForm onFilter={handleFilter} />
+      <FilterForm onFilter={handleFilter} setError={setError}/>
+      {error && <p className="error">{error}</p>}
       {filteredCodes && filteredCodes.length > 0 &&
       <>
         <div className="filter-form">
@@ -164,7 +196,6 @@ const SearchPage = () => {
           }} />
           <button className="iconBtn" onClick={saveList}><SaveIcon /></button>
         </div>
-        {error && <p className="error">{error}</p>}
         <div className="searchResult-container">
           {filteredCodes.map((code) => (
             <ResponseCodeImage key={code} code={code} />

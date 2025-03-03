@@ -3,6 +3,8 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import Toast from "./Toast";
+import Loader from "./Loader";
 
 const AuthForm = () => {
   const [email, setEmail] = useState("");
@@ -10,36 +12,48 @@ const AuthForm = () => {
   const [password, setPassword] = useState("");
   const [cnfpassword, setCnfPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();    
     try {
       let userData;
+      setIsLoading(true);
       if (isLogin) {
         userData = await signInWithEmailAndPassword(auth, email, password);
       } else {
         if(password.length > 6 && password  === cnfpassword) {
           userData = await createUserWithEmailAndPassword(auth, email, password);
+          setMessage("Account created succefully");
+          setShowToast(true);
         }
         else if(password.length < 6) {
           setError("Password must be at least 6 characters long");
+          setIsLoading(false);
           return;
         }
         else if(password !== cnfpassword) {
           setError("Passwords do not match");
+          setIsLoading(false);
           return;
         }
-      }
-      navigate('/lists');
+      }      
+      setIsLoading(false);
+      setTimeout(()=> navigate('/lists'), 2000)
       
     } catch (error) {
+      setIsLoading(false);
       setError(error.message);
     }
   };
 
   return (
     <div className="loginContainer">
+      {showToast && <Toast message={message}/>}
+      {isLoading && <Loader />}
       <h2>{isLogin ? "Login" : "Signup"}</h2>
       <form className="loginForm" onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
